@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, reverse
 
+import datetime
+import os
+
 
 def home_view(request):
     template_name = 'app/home.html'
@@ -8,10 +11,10 @@ def home_view(request):
     # функцию `reverse`
     pages = {
         'Главная страница': reverse('home'),
-        'Показать текущее время': '',
-        'Показать содержимое рабочей директории': ''
+        'Показать текущее время': reverse('time'),
+        'Показать содержимое рабочей директории': reverse('workdir')
     }
-    
+
     # context и параметры render менять не нужно
     # подбробнее о них мы поговорим на следующих лекциях
     context = {
@@ -21,15 +24,19 @@ def home_view(request):
 
 
 def time_view(request):
-    # обратите внимание – здесь HTML шаблона нет, 
+    # обратите внимание – здесь HTML шаблона нет,
     # возвращается просто текст
-    current_time = None
-    msg = f'Текущее время: {current_time}'
+    current_date = datetime.date.today()
+    current_time = datetime.datetime.now().time()
+    msg = f'Текущяя дата и время: {current_date}, {current_time}'
     return HttpResponse(msg)
 
 
 def workdir_view(request):
     # по аналогии с `time_view`, напишите код,
-    # который возвращает список файлов в рабочей 
+    # который возвращает список файлов в рабочей
     # директории
-    raise NotImplemented
+    work_dir = sorted(os.listdir(path='.'))
+    msg = f'Содержимое рабочей директории: {work_dir}'
+    return HttpResponse(msg)
+    # raise NotImplemented
