@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1 style="color: blue; font-size: 20px " >
+        Список доступных рецептов:</h1>
+    <ul style="color: brown; font-size: 16px " >    <!-- unordered list -->
+    {% for recipe in recipes_all %}
+        <li><a href="{{recipe}}">{{recipe|capfirst}}</a></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

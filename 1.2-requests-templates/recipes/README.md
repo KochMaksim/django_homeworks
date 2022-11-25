@@ -56,6 +56,7 @@ context = {
 ```bash
 pip install -r requirements.txt
 ```
+cd 1.2-requests-templates/recipes
 
 - Выполнить команду:
 
