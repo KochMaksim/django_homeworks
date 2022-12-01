@@ -4,7 +4,8 @@ from books.models import Book
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', 'pub_date',)
+    list_display = ('id', 'name', 'author', 'pub_date', 'slug')
+    prepopulated_fields = {"slug": ("pub_date",)}   # заполнять поле slug по данным поля pub_date
 
 
 admin.site.register(Book, BookAdmin)

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог книг{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <h1><a href="/books">Каталог</a></h1>
+        </div>
+        <div class="row">
+            <div class="book col-md-4">
+                <ul style="color: brown; font-size: 16px " >    <!-- unordered list -->
+                {% for book in books %}
+                <li><a href="{% url 'book' book.slug %}">{{book.name}}</a></li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <a href="{% url 'index' %}">Вернуться на главную</a>
+    </div>
+{% endblock %}
