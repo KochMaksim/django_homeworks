@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from advertisements.models import Advertisement
 
@@ -9,21 +10,17 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name',
-                  'last_name',)
+        fields = ('id', 'username', 'first_name', 'last_name')
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
     """Serializer для объявления."""
 
-    creator = UserSerializer(
-        read_only=True,
-    )
+    creator = UserSerializer(read_only=True)
 
     class Meta:
         model = Advertisement
-        fields = ('id', 'title', 'description', 'creator',
-                  'status', 'created_at', )
+        fields = ('id', 'title', 'description', 'creator', 'status', 'created_at')
 
     def create(self, validated_data):
         """Метод для создания"""
@@ -40,6 +37,17 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """Метод для валидации. Вызывается при создании и обновлении."""
 
-        # TODO: добавьте требуемую валидацию
+        user_status_open = Advertisement.objects.filter(
+            status__exact='OPEN',
+            creator=self.context["request"].user).\
+            count()
+
+        print(f'У пользователя {self.context["request"].user}, открытых объявлений: {user_status_open}')
+
+        # проверка на закрытие статуса и количества открытых объявлений
+        if data['status'] == 'CLOSED':
+            return data
+        elif user_status_open > 9:
+            raise ValidationError("Пользователь не может иметь больше 10 открытых объявлений")
 
         return data

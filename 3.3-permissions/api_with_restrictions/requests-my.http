@@ -1,0 +1,80 @@
+# примеры API-запросов
+
+@baseUrl = http://127.0.0.1:8000/api
+
+# получение объявлений
+GET {{baseUrl}}/advertisements/?ordering=id
+# GET {{baseUrl}}/advertisements/?status=CLOSED
+Content-Type: application/json
+
+###
+
+# создание объявления
+POST {{baseUrl}}/advertisements/
+Content-Type: application/json
+Authorization: Token 9599fa78439ff2c4cda743e11bd20211974f27b6
+# Authorization: Token 743800c936a71b8a5aca72e6d2e7bbd3d434ac76
+
+{
+//  "title": "Шкаф IKEA",
+//  "description": "Срочно",
+//  "status": "OPEN"
+
+//  "title": "Смартфон Xiaomi Note 8",
+//  "description": "Работает хорошо!",
+//  "status": "CLOSED"
+
+//  "title": "Стол трансформер",
+//  "description": "Есть небольшие дефекты",
+//  "status": "OPEN"
+
+//  "title": "Велосипед",
+//  "description": "В хорошем состоянии",
+//  "status": "OPEN"
+
+//  "title": "Свитер, красный",
+//  "description": "Новый",
+//  "status": "OPEN"
+  
+  "title": "Шкаф IKEA 5",
+  "description": "Очень Срочно",
+  "status": "OPEN"
+}
+
+###
+
+# попытка поменять объявление
+PATCH {{baseUrl}}/advertisements/29/
+Content-Type: application/json
+# Authorization: Token 9599fa78439ff2c4cda743e11bd20211974f27b6
+# Authorization: Token 743800c936a71b8a5aca72e6d2e7bbd3d434ac76
+# admin
+Authorization: Token 909d2c1d9a16811c5187937117299704fbeac00f
+
+{
+//  "status": "CLOSED"
+  "status": "OPEN"
+}
+
+###
+
+# фильтрация по создателю
+GET {{baseUrl}}/advertisements/?creator=2
+Content-Type: application/json
+
+###
+
+# фильтрация по дате
+GET {{baseUrl}}/advertisements/?created_at_before=2022-12-31 18:48
+# GET {{baseUrl}}/advertisements/?created_at_after=2022-12-31 18:48
+Content-Type: application/json
+
+###
+
+# удалить объявления
+DELETE {{baseUrl}}/advertisements/22/
+Content-Type: application/json
+# Authorization: Token 9599fa78439ff2c4cda743e11bd20211974f27b6
+# Authorization: Token 743800c936a71b8a5aca72e6d2e7bbd3d434ac76
+# admin
+Authorization: Token 909d2c1d9a16811c5187937117299704fbeac00f
