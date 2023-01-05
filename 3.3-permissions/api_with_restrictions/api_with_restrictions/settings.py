@@ -85,7 +85,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'user': '20/minute',
         'anon': '10/minute',
-    }
+    },
+    'ORDERING_PARAM': 'o',
 }
 
 WSGI_APPLICATION = 'api_with_restrictions.wsgi.application'

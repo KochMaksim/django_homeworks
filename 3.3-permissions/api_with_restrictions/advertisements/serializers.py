@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 
-from advertisements.models import Advertisement
+from advertisements.models import Advertisement, Favorites
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,3 +52,37 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             raise ValidationError("Пользователь не может иметь больше 10 открытых объявлений")
 
         return data
+
+
+class FavoritesSerializer(serializers.ModelSerializer):
+    """Serializer для избранных объявлений."""
+
+    # user_favorites = UserSerializer(read_only=True)
+    # adv = AdvertisementSerializer(read_only=True)
+
+    class Meta:
+        model = Favorites
+        fields = ['user_favorites', 'adv']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['user_favorites'] = instance.user_favorites.username
+        representation['adv'] = {"id": instance.adv.id, "title": instance.adv.title, "status": instance.adv.status}
+        return representation
+
+    def validate(self, data):
+        """Метод для валидации. Вызывается при создании и обновлении."""
+
+        # фильтр избранного объявления из всех
+        favorite_adv = Advertisement.objects.filter(id=data['adv'].id)
+        # фильтр избраных объявлений пользователя, на наличие нового
+        user_favorites_qs = Favorites.objects.filter(adv_id__exact=data['adv'].id)
+
+        # id пользов. на доб. объяв. в избранное != id пользов. создавшего объявление
+        if data['user_favorites'].id != favorite_adv[0].creator.id:
+            if len(user_favorites_qs) == 0:
+                return data
+            else:
+                raise ValidationError('Объявление с таким id есть в Избранном')
+        else:
+            raise ValidationError('Свое объявление нельзя добавить в Избранное')
