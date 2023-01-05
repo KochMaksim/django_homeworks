@@ -5,6 +5,7 @@ from django.db import models
 class Product(models.Model):
     title = models.CharField(max_length=60, unique=True)
     description = models.TextField(null=True, blank=True)
+    # positions
 
 
 class Stock(models.Model):
@@ -14,6 +15,7 @@ class Stock(models.Model):
         through='StockProduct',
         related_name='stocks',
     )
+    # positions
 
 
 class StockProduct(models.Model):
