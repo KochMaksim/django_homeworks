@@ -14,12 +14,14 @@
                 <p>Автор: {{ book.author }}</p>
                 <p>Дата публикации: {{ book.pub_date }}</p>
                 {% endfor %}
-                    {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}">< prev data</a>
+                    {% if books_previous %}
+                    <a type="button" class="btn btn-primary"
+                       href="{% url 'book' books_previous.pub_date %}">{{ books_previous.pub_date }} </a>
                     {% endif %}
                     &ensp;&ensp;&ensp;
-                    {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">next_data ></a>
+                     {% if books_next %}
+                    <a class="btn btn-primary"
+                       href="{% url 'book' books_next %}">{{ books_next }}</a>
                     {% endif %}
             </div>
         </div>

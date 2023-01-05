@@ -16,31 +16,18 @@ def books_view(request):
     return render(request, template, context)
 
 
-def show_book(request, slug):
+def show_book(request, pub_date):
     template = 'books/book.html'
-    book_objects = Book.objects.order_by('pub_date')
-    page_start_num = 0
-    slug_all = []
-    for b in book_objects:
-        slug_all.append(b.slug)        # save all pub_date in list
+    book_objects = Book.objects.filter(pub_date=pub_date)
 
-    for i in range(len(slug_all)):
-        if slug_all[i] == slug:
-            page_start_num = i+1              # start page number equals (index +1) list  slug_all
-    print('slug_all:', slug_all)
+    # Пред. книга по дате публикации. Отсортировать в БД, и достать первую пред. дату
+    books_previous = Book.objects.filter(pub_date__lt=pub_date).order_by('-pub_date').first()
+    books_next = Book.objects.filter(
+        pub_date__gt=pub_date                                           # pub_date__gt - больше текущей даты pub_date
+    ).order_by('pub_date').values_list('pub_date', flat=True).first()   # values_list + flat=True => list[]. first book
 
-    page_number = request.GET.get('page', page_start_num)
-    print('page_number:', page_number)
-    paginator = Paginator(book_objects, 1)
-    page_obj = paginator.get_page(page_number)
-    print('page_obj:', page_obj.object_list)
-
-    # slug_prev = slug_all[int(page_number)-2]
-    # slug_next = slug_all[int(page_number)]
-    # print('slug_prev:', type(slug_prev), slug_prev)
-
-    context = {'page_obj': page_obj,
-               # 'slug_prev': slug_prev,
-               # 'slug_next': slug_next
+    context = {'page_obj': book_objects,
+               'books_next': books_next,
+               'books_previous': books_previous
                }
     return render(request, template, context)
