@@ -76,6 +76,7 @@ class RelationshipInlineFormset(BaseInlineFormSet):
             # В form.cleaned_data будет словарь с данными
             # каждой отдельной формы, которые вы можете проверить
             form.cleaned_data
+            print(f'form.cleaned_data: {form.cleaned_data}')
             # вызовом исключения ValidationError можно указать админке о наличие ошибки
             # таким образом объект не будет сохранен,
             # а пользователю выведется соответствующее сообщение об ошибке
