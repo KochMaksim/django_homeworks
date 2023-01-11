@@ -62,7 +62,7 @@ class FavoritesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favorites
-        fields = ['user_favorites', 'adv']
+        fields = ['id', 'user_favorites', 'adv']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -80,9 +80,10 @@ class FavoritesSerializer(serializers.ModelSerializer):
 
         # id пользов. на доб. объяв. в избранное != id пользов. создавшего объявление
         if data['user_favorites'].id != favorite_adv[0].creator.id:
-            if len(user_favorites_qs) == 0:
-                return data
-            else:
+            # .exists() - True, eсли есть объявления
+            if user_favorites_qs.exists():
                 raise ValidationError('Объявление с таким id есть в Избранном')
+            else:
+                return data
         else:
             raise ValidationError('Свое объявление нельзя добавить в Избранное')

@@ -38,9 +38,12 @@ class AdvertisementViewSet(ModelViewSet):
         """Просмотр избранных объявлений"""
 
         # фильтр всех избранных объявлений пользователя
-        user_favorites_qs = Favorites.objects.filter(user_favorites__exact=request.user)
+        user_favorites_qs = Favorites.objects.filter(user_favorites__exact=request.user).order_by('id')
+        # print('len: ', len(user_favorites_qs))
+        # print('exists: ', user_favorites_qs.exists())
 
-        if len(user_favorites_qs) != 0:
+        # .exists() - Возвращает True, если QuerySet содержит результ., и False, если нет
+        if user_favorites_qs.exists():
             favorites_srl = FavoritesSerializer(user_favorites_qs, many=True)
             return Response(favorites_srl.data)
         raise ValidationError(f"У пользователя: {str(request.user)} - нет избранных объявлений")
