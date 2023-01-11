@@ -11,6 +11,7 @@ def client():
     """Фикстура для клиента API."""
     return APIClient()
 
+
 @pytest.fixture
 def student_factory():
     """Фикстура для фабрики студентов."""
@@ -18,6 +19,7 @@ def student_factory():
         return baker.make(Student, *args, **kwargs)
 
     return factory
+
 
 @pytest.fixture
 def course_factory():
@@ -67,6 +69,7 @@ def test_course_filter_id(client, course_factory):
         assert crs['id'] == course_id[0].id
         # проверка результата запроса с фильтром по name
         assert crs['name'] == oourse_name[0].name
+
 
 @pytest.mark.django_db
 def test_course_create(client):
