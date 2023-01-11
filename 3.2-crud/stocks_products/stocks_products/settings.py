@@ -82,9 +82,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stocks_products_3_2',
         'HOST': 'localhost',
-        'PORT': '5434',
+        'PORT': '5432',
         'USER': 'postgres',
-        'PASSWORD': 'gjcnuhtc_h',
+        'PASSWORD': 'gjcnuhtc_w',
     }
 }
 
@@ -133,5 +133,8 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'SEARCH_PARAM': 's',
+    # 'SEARCH_PARAM': 's',
+    'ORDERING_PARAM': 'o',
+
+    'PAGE_SIZE': 3,
 }

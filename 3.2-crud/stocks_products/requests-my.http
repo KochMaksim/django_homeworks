@@ -7,14 +7,14 @@ POST {{baseUrl}}/products/
 Content-Type: application/json
 
 {
-  "title": "product_4",
-  "description": "description_4"
+  "title": "product_5",
+  "description": "description_4_plus"
 }
 
 ###
 
-# получение продуктов
-GET {{baseUrl}}/products/
+# получение продуктов (по id)
+GET {{baseUrl}}/products/?o=id
 Content-Type: application/json
 
 ###
@@ -30,13 +30,13 @@ Content-Type: application/json
 ###
 
 # удаление продукта
-DELETE {{baseUrl}}/products/3/
+DELETE {{baseUrl}}/products/4/
 Content-Type: application/json
 
 ###
 
 # поиск продуктов по названию и описанию
-GET {{baseUrl}}/products/?s=product_1
+GET {{baseUrl}}/products/?search=product_1,description_
 Content-Type: application/json
 
 ###
@@ -45,45 +45,98 @@ Content-Type: application/json
 POST {{baseUrl}}/stocks/
 Content-Type: application/json
 
+# {
+#   "address": "мой адрес не дом и не улица, мой адрес сегодня такой: www.ленинград-спб.ru3",
+#   "positions": [
+#     {
+#       "product": 1,
+#       "quantity": 92,
+#       "price": 165
+#     },
+#     {
+#       "product": 2,
+#       "quantity": 250,
+#       "price": 120.50
+#     },
+#     {
+#       "product": 3,
+#       "quantity": 100,
+#       "price": 180
+#     }
+#   ]
+# }
+
 {
-  "address": "мой адрес не дом и не улица, мой адрес сегодня такой: www.ленинград-спб.ru3",
+  "address": "склад тополиный пух",
   "positions": [
     {
-      "product": 2,
-      "quantity": 250,
-      "price": 120.50
+      "product": 1,
+      "quantity": 70,
+      "price": 190
     },
     {
-      "product": 4,
-      "quantity": 100,
-      "price": 180
-    }
-  ]
-}
-
-###
-
-# обновляем записи на складе
-PATCH {{baseUrl}}/stocks/4/
-Content-Type: application/json
-
-{
-  "positions": [
-    {
       "product": 2,
-      "quantity": 100,
-      "price": 130.80
+      "quantity": 200,
+      "price": 140.50
     },
     {
       "product": 3,
-      "quantity": 243,
-      "price": 145
+      "quantity": 120,
+      "price": 170
+    },
+    {
+      "product": 5,
+      "quantity": 300,
+      "price": 50.7
     }
   ]
 }
 
 ###
 
-# поиск складов, где есть определенный продукт
-GET {{baseUrl}}/stocks/?products=2
+# обновляем записи на складе (или создаем, если нет)
+PATCH {{baseUrl}}/stocks/3/
+Content-Type: application/json
+
+# {
+#   "positions": [
+#     {
+#       "product": 2,
+#       "quantity": 100,
+#       "price": 130.80
+#     },
+#     {
+#       "product": 3,
+#       "quantity": 243,
+#       "price": 145
+#     }
+#   ]
+# }
+
+{
+  "positions": [
+    {
+      "product": 6,
+      "quantity": 35,
+      "price": 616
+    }
+  ]
+}
+
+###
+
+# поиск складов, где есть продукт, по его id
+GET {{baseUrl}}/stocks/?products=3
+Content-Type: application/json
+
+###
+
+# поиск складов, где есть продукт, по его имени и описанию
+GET {{baseUrl}}/stocks/?search=product_,description_4
+Content-Type: application/json
+
+###
+
+# все склады
+GET {{baseUrl}}/stocks/
 Content-Type: application/json
